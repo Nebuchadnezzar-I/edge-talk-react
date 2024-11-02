@@ -1,0 +1,68 @@
+import { X } from 'lucide-react';
+import React, { useRef } from 'react';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+
+interface ModalCarouselProps {
+    isOpen: boolean;
+    setIsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+type QnA = {
+    q: string;
+    a: string;
+}
+
+const qna: QnA[] = [];
+
+const questionList = [
+    ""
+];
+
+export default function ModalCarousel({ isOpen, setIsModalOpen }: ModalCarouselProps) {
+    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+    if (!setIsModalOpen) return;
+
+    const handleScrollNext = () => {
+        if (scrollContainerRef.current) {
+            const width = scrollContainerRef.current.clientWidth;
+            scrollContainerRef.current.scrollBy({ left: width, behavior: 'smooth' });
+        }
+    };
+
+    const handleScrollPrevious = () => {
+        if (scrollContainerRef.current) {
+            const width = scrollContainerRef.current.clientWidth;
+            scrollContainerRef.current.scrollBy({ left: -width, behavior: 'smooth' });
+        }
+    };
+
+    return (
+        <div className={` fixed bottom-0 left-0 w-full modal-max-h duration-300 rounded-t-xl bg-secondary ${isOpen ? 'h-full' : 'h-0'} `}>
+
+            {/* Header */}
+            <div className='flex p-3 justify-between'>
+                <p>Create new negotiation</p>
+                <X  onClick={() => setIsModalOpen(false)} />
+            </div>
+
+            <div className='w-full h-full p-3 justify-between flex flex-col pb-20 mt-5'>
+                {/* Carousel */}
+                <div ref={scrollContainerRef} className='flex overflow-x-auto snap-x snap-mandatory'>
+                    <div className='flex flex-col gap-1 min-w-full snap-center'>
+                        <p>What is the name of the negotiation?</p>
+                        <Input type="text" className='text-md' />
+                    </div>
+
+                    <div className='flex flex-col gap-1 min-w-full snap-center'>
+                        <p>What is the name of the negotiation?</p>
+                        <Input type="text" className='text-md' />
+                    </div>
+                </div>
+
+                <Button className='w-full' onClick={handleScrollNext}>Next</Button>
+            </div>
+
+        </div>
+    );
+}

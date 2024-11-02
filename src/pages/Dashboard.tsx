@@ -1,67 +1,34 @@
-import { VITE_SUPABASE_KEY, VITE_SUPABASE_URL } from '../config';
-import { createClient } from "@supabase/supabase-js";
-import React, { useEffect, useState } from 'react';
-import { SidebarProvider, SidebarTrigger } from '../components/ui/sidebar';
+import React from 'react';
+import { SidebarProvider } from '../components/ui/sidebar';
 import { AppSidebar } from '../components/ui/app-sidebar';
 import { ModeToggle } from '../components/custom/mode-toggle';
-import { AIToggle } from '../components/custom/ai-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import NewNegotiation from '../components/custom/new-negotiation';
-
-import { Card, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-
-const supabase = createClient(VITE_SUPABASE_URL, VITE_SUPABASE_KEY);
-
-type Country = {
-    id: number;
-    name: string;
-};
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { CircleArrowRight, X } from 'lucide-react';
+import ModalCarousel from '../components/custom/modal-carousel';
 
 export default function Dashboard() {
-    const [countries, setCountries] = useState<Country[]>([]);
-
-    useEffect(() => {
-        getCountries();
-    }, []);
-
-    async function getCountries() {
-        const { data } = await supabase.from("countries").select();
-        if (!data) {
-            const data = [];
-            setCountries(data);
-        }
-
-        setCountries(data as Country[]);
-    }
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const isFirstNegotiation = true;
 
     return (
         <SidebarProvider>
             <AppSidebar />
             <main className='p-3 w-full'>
                 <AppNavigation />
-                <div className='home-content-height overflow-y-auto'>
-                    {
-                        Array.from({ length: 10 }).map(() => (
-                            <Card className='flex items-center my-3 mr-3'>
-                                <CardHeader>
-                                    <CardTitle>
-                                        <a href={`/n/${Math.floor(Math.random() * 100000)}`} className='hover:underline'>#191-991</a>
-                                    </CardTitle>
-                                    <CardDescription>Car payment</CardDescription>
+                <div className={`home-content-height overflow-y-auto h-full ${isFirstNegotiation && 'flex items-center justify-center'}`}>
 
-                                    {/* TODO: Add content */}
-                                </CardHeader>
-                            </Card>
-                        ))
-                    }
+                    {isFirstNegotiation && (
+                        <Button
+                            className='rounded-full flex items-center gap-5'
+                            onClick={() => setIsModalOpen(true)}
+                        >
+                            Create new negotiation <CircleArrowRight />
+                        </Button>
+                    )}
 
-                    {/*<div>
-                        <ul>
-                            {countries.map((country) => (
-                                <li key={country.name}>{country.name}</li>
-                            ))}
-                        </ul>
-                    </div>*/}
+                    <ModalCarousel isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
                 </div>
             </main>
         </SidebarProvider>
@@ -71,10 +38,14 @@ export default function Dashboard() {
 export function AppNavigation() {
     return (
         <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-3'>
+            {/*<div className='flex items-center gap-3'>
                 <SidebarTrigger />
                 <NewNegotiation />
                 <AIToggle />
+            </div>
+            */}
+            <div>
+                <p className='text-xl font-bold'>EdgeTalk.ai</p>
             </div>
             <div className='flex items-center gap-3'>
                 <ModeToggle />
