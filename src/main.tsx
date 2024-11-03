@@ -1,25 +1,16 @@
-import React from 'react'
-import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { ThemeProvider } from './components/custom/theme-provider'
-import './index.css'
+import { createRoot } from 'react-dom/client'
 
-// Pages
-import Dashboard from './pages/Dashboard'
-import ChatWindow from './pages/ChatWindow'
+import Dashboard from './pages/dashboard'
+import './index.css'
+import { ThemeProvider } from './components/theme/theme-provider'
 
 createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
-        <Routes>
+         <Routes>
             <Route path="/" element={
                 <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
                     <Dashboard />
-                </ThemeProvider>
-            } />
-
-            <Route path="/n/:slug" element={
-                <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-                    <ChatWindow />
                 </ThemeProvider>
             } />
         </Routes>
