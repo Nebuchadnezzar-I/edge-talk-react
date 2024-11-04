@@ -5,6 +5,8 @@ import { questionnaire } from "@/utils/questionnaire";
 import { CircleX } from "lucide-react";
 import { useRef, useState } from "react";
 
+// TODO: Implement state machine
+
 interface NegotiationDrawerProps {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
