@@ -1,11 +1,9 @@
 import { useState } from "react";
 
-import NegotiationDrawer from "./drawer";
-
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button";
 import { CircleArrowRight } from "lucide-react";
+import { NewN } from "./new-n";
 
 export default function Page() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -39,7 +37,7 @@ export default function Page() {
                 </div>
             )}
 
-            <NegotiationDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
+            <NewN isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
         </div>
     );
 }

@@ -1,4 +1,4 @@
-type Questionnaire = {
+export type Questionnaire = {
     i: 't' | 'i'; // i = input, t = textarea
     q: string;
     a: string;
