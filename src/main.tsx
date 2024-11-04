@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 
-import Dashboard from './pages/dashboard'
+import Dashboard from './pages/dashboard/page'
 import './index.css'
 import { ThemeProvider } from './components/theme/theme-provider'
 

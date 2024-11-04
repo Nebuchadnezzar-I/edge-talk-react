@@ -13,6 +13,8 @@ interface NegotiationDrawerProps {
 export default function NegotiationDrawer({ isOpen, setIsOpen }: NegotiationDrawerProps) {
     const [questionIdx, setQuestionIdx] = useState(0);
     const [isReviewing, setIsReviewing] = useState(false);
+    const [children, setChildren] = useState<JSX.Element[]>([]);
+    const [AIResponse, setAIResponse] = useState<JSX.Element>();
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     const swipeNext = () => {
@@ -38,7 +40,7 @@ export default function NegotiationDrawer({ isOpen, setIsOpen }: NegotiationDraw
         }
     };
 
-    const submitFormAndMove = (e: React.FormEvent<HTMLFormElement>) => {
+    const submitFormAndMove = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         let i = 0;
@@ -50,15 +52,48 @@ export default function NegotiationDrawer({ isOpen, setIsOpen }: NegotiationDraw
             }
         }
 
-        console.log(questionnaire);
+        const prompt = `Please analyze the following questionnaire responses and provide a conclusion about the user's understanding: Responses: ${JSON.stringify(questionnaire)} Conclusion:`;
+        const aiResponse = await fetchOpenAIResponse(prompt);
+        setAIResponse(<Textarea value={aiResponse} className="text-md h-full" disabled />);
+
         setIsReviewing(true);
         swipeNext();
     }
 
     const createAndClose = () => {
         setIsOpen(false);
-        swipeToStart();
         setIsReviewing(false);
+        swipeToStart();
+    }
+
+    async function fetchOpenAIResponse(prompt: string): Promise<string> {
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer `,
+            },
+            body: JSON.stringify({
+                model: "gpt-3.5-turbo",
+                messages: [
+                    { role: "system", content: "Make key-notes from source provided, nothing else." },
+                    { role: "user", content: prompt },
+                ],
+                max_tokens: 300,
+            }),
+        });
+
+        const data = await response.json();
+        return data.choices[0].message.content;
+    }
+
+    const returnForReview = async () => {
+        const newChild = (
+            <p>Edit this to your liking.</p>
+        );
+
+        setChildren((prevChildren) => [...prevChildren, newChild]);
+        swipeNext();
     }
 
     return (
@@ -83,14 +118,23 @@ export default function NegotiationDrawer({ isOpen, setIsOpen }: NegotiationDraw
                 }
 
                 <div className="w-full h-full flex flex-col p-3 gap-2 min-w-full snap-center">
-                    <p>Would you say this is correct?</p>
+                    <p>Is this conclusion correct?</p>
+                    {AIResponse}
                 </div>
+
+                {
+                    children.map((child, idx) => (
+                        <div key={idx} className="w-full h-full flex flex-col p-3 gap-2 min-w-full snap-center">
+                            {child}
+                        </div>
+                    ))
+                }
 
             </div>
             <div className="px-3 pb-3 flex">
                 {isReviewing && (
                     <div className="flex w-full gap-3">
-                        <Button variant="outline" className="w-full" type="button">No</Button>
+                        <Button variant="outline" className="w-full" type="button" onClick={returnForReview}>No</Button>
                         <Button variant="outline" className="w-full" type="button" onClick={createAndClose}>Yes</Button>
                     </div>
                 )}
