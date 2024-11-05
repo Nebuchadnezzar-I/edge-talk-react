@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button";
 import { CircleArrowRight } from "lucide-react";
 import { NewN } from "./new-n";
+import { NewS } from "./new-s";
 
 export default function Page() {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isDrawerOpenS, setIsDrawerOpenS] = useState(false);
+    const [isDrawerOpenN, setIsDrawerOpenN] = useState(false);
     const isFirstNegotiation = true;
+    const refContainer = useRef<HTMLDivElement>(null);
+
+    const swipeNext = (containerRef: React.MutableRefObject<HTMLDivElement | null>) => {
+        if (containerRef.current) {
+            const scrollAmount = containerRef.current.offsetWidth;
+            containerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        }
+    }
+
+    const swipeBack = (containerRef: React.MutableRefObject<HTMLDivElement | null>) => {
+        if (containerRef.current) {
+            const scrollAmount = containerRef.current.offsetWidth;
+            containerRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+        }
+    }
 
     return (
         <div className="w-full h-full">
@@ -23,7 +40,7 @@ export default function Page() {
                 <div className="w-full h-full max-elm-h flex items-center justify-center">
                     <Button
                         className="rounded-full flex items-center gap-3"
-                        onClick={() => setIsDrawerOpen(true)}
+                        onClick={() => setIsDrawerOpenN(true)}
                     >
                         New negotiation
                         <CircleArrowRight />
@@ -31,13 +48,39 @@ export default function Page() {
                 </div>
             )}
 
-            {!isFirstNegotiation && (
-                <div className="w-full h-full max-elm-h bg-red-500">
-                    {/* TODO */}
-                </div>
-            )}
+            <div className="flex h-full max-elm-h overflow-x-hidden" ref={refContainer}>
+                {/* Session list */}
+                {!isFirstNegotiation && (
+                    <div className="w-full h-full overflow-y-auto min-w-[100%] border-box">
+                        <div className="p-5 border rounded-e"
+                            onClick={() => swipeNext(refContainer)}
+                        >
+                            Next
+                        </div>
+                    </div>
+                )}
 
-            <NewN isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
+                {/* Negotiation list */}
+                {!isFirstNegotiation && (
+                    <div className="w-full h-full overflow-y-auto min-w-[100%] border-box">
+                        <div className="p-5 border"
+                            onClick={() => swipeBack(refContainer)}
+                        >
+                            Back
+                        </div>
+                        <Button
+                            className="rounded-full flex items-center gap-3 mx-auto mt-10"
+                            onClick={() => setIsDrawerOpenS(true)}
+                        >
+                            New session
+                            <CircleArrowRight />
+                        </Button>
+                    </div>
+                )}
+            </div>
+
+            <NewN isOpen={isDrawerOpenN} setIsOpen={setIsDrawerOpenN} />
+            <NewS isOpen={isDrawerOpenS} setIsOpen={setIsDrawerOpenS} />
         </div>
     );
 }

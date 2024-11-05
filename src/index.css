@@ -72,6 +72,6 @@
         @apply w-full h-full;
     }
     .max-elm-h {
-        max-height: calc(100dvh - 1rem - 3.5rem);
+        max-height: calc(100dvh - 1rem - 3.5rem - 0.75rem * 2);
     }
 }
