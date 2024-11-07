@@ -1,4 +1,4 @@
-{
+export const form1 = {
     "sections": [
         {
             "sectionTitle": "1.1 What is prompting this negotiation?",
