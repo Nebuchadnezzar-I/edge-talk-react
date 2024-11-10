@@ -28,8 +28,24 @@ export const GetNextStep = (stepIdx: number): JSX.Element => {
             return <RenderYesNo data={renderData} idx={stepIdx} />;
 
         default:
-            return <div>Not implemented</div>;
+            return <RenderTemplate data={renderData} idx={stepIdx} />;
     }
+}
+
+interface templProps {
+    data: FormQuestions
+    idx: number
+}
+
+export const RenderTemplate = ({ data, idx }: templProps) => {
+    return (
+        <div className="flex flex-col gap-3 w-full mb-3 mt-5">
+            <p><strong>{idx + 1}</strong> {data.qes}</p>
+            {data.refopts?.map((opt) => (
+                <p>-- {opt}</p>
+            ))}
+        </div>
+    );
 }
 
 interface RenderMultiChoiceProps {
