@@ -1,7 +1,10 @@
-import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
-import { X } from "lucide-react";
+import { firstForm } from "./helpers/temp";
+
+import { Button } from "@/components/ui/button";
 import { GetNextStep } from "./helpers/step";
+
+import { X } from "lucide-react";
 
 interface NNProps {
     isOpen: boolean;
@@ -25,6 +28,7 @@ export default function NewNegotiation({ isOpen, setIsOpen }: NNProps) {
     }, [stepIdx]);
 
     const renderNextStep = () => {
+        if (stepIdx === firstForm.length) return;
         if (!isLoading) setStepIdx((prev) => prev + 1);
     };
 
@@ -35,10 +39,10 @@ export default function NewNegotiation({ isOpen, setIsOpen }: NNProps) {
     return (
         <div
             className={`
-${isOpen ? "h-[100dvh] pb-8" : "h-[0px]"}
-duration-200 fixed w-full bg-background bottom-0 left-0 p-3
-flex flex-col
-`}
+                ${isOpen ? "h-[100dvh] pb-8" : "h-[0px]"}
+                duration-200 fixed w-full bg-background bottom-0 left-0 p-3
+                flex flex-col
+            `}
         >
             {/* Header */}
             <div className="flex items-center justify-between w-full">
