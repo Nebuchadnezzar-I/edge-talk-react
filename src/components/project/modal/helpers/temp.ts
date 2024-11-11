@@ -19,11 +19,6 @@ export const firstForm: FormQuestions[] = [
         elt: "section",
     },
     {
-        qes: "Are there any inconsistencies or points requiring clarification?",
-        elt: "textarea",
-        note: "Document any inconsistencies identified during the negotiation or preparation."
-    },
-    {
         qes: "What is prompting this negotiation?",
         elt: "unknown",
         refopts: [

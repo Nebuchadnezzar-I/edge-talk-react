@@ -77,5 +77,13 @@ export default {
     		}
     	}
     },
-    plugins: [require("tailwindcss-animate")],
+    plugins: [
+        require("tailwindcss-animate"),
+        function ({ addUtilities }) {
+            addUtilities({
+                '.scroll-snap-x': { 'scroll-snap-type': 'x mandatory' },
+                '.scroll-snap-start': { 'scroll-snap-align': 'start' },
+            });
+        },
+    ],
 }

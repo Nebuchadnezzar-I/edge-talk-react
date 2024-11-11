@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { firstForm } from "./helpers/temp";
+import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { GetNextStep } from "./helpers/step";
+import { GetNextStep, NextStepData } from "./helpers/step";
 
 import { X } from "lucide-react";
+import { firstForm } from "./helpers/temp";
 
 interface NNProps {
     isOpen: boolean;
@@ -12,28 +12,76 @@ interface NNProps {
 }
 
 export default function NewNegotiation({ isOpen, setIsOpen }: NNProps) {
-    const [step, setStep] = useState<JSX.Element>(<div></div>);
-    const [stepIdx, setStepIdx] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
+    const [formElements, setFormElements] = useState<NextStepData[]>([]);
+    const [elmIndex, setElmIndex] = useState(0);
     const swipeContainer = useRef<HTMLDivElement>(null);
+    console.log(elmIndex);
 
-    useEffect(() => {
+    const swipeToNextStep = () => {
+        return new Promise((resolve) => {
+            if (!swipeContainer.current) return;
+            swipeContainer.current.scrollTo({
+                left: swipeContainer.current.scrollLeft + swipeContainer.current.clientWidth,
+                behavior: 'smooth',
+            });
+
+            setTimeout(() => {
+                resolve(1);
+            }, 250);
+        });
+    }
+
+    const swipeToPrevStep = () => {
+        return new Promise((resolve) => {
+            if (!swipeContainer.current) return;
+            swipeContainer.current.scrollTo({
+                left: swipeContainer.current.scrollLeft - swipeContainer.current.clientWidth,
+                behavior: 'smooth',
+            });
+
+            setTimeout(() => {
+                resolve(1);
+            }, 250);
+        });
+    }
+
+    const renderNextElement = async () => {
+        return new Promise((resolve) => {
+            const newElm = GetNextStep(elmIndex);
+            setFormElements((prev) => [...prev, newElm]);
+            swipeToNextStep();
+            resolve(newElm);
+        });
+    }
+
+    const renderNextStep = async () => {
         setIsLoading(true);
-        const fetchStep = async () => {
-            const nextStep = GetNextStep(stepIdx);
-            setStep(nextStep);
-            setIsLoading(false);
-        };
-        fetchStep();
-    }, [stepIdx]);
-
-    const renderNextStep = () => {
-        if (stepIdx === firstForm.length) return;
-        if (!isLoading) setStepIdx((prev) => prev + 1);
+        if (firstForm.length >= elmIndex) {
+            renderNextElement().then(() => {
+                setElmIndex(elmIndex + 1);
+                swipeToNextStep().then(() => {
+                    setIsLoading(false);
+                });
+            });
+        }
     };
 
-    const renderPrevStep = () => {
-        if (!isLoading && stepIdx > 0) setStepIdx((prev) => prev - 1);
+    if (formElements.length === 0) {
+        setElmIndex(elmIndex + 1);
+        renderNextElement();
+    }
+
+    const renderPrevStep = async () => {
+        setIsLoading(true);
+        if (elmIndex === 1) {
+            setIsLoading(false);
+            return;
+        }
+        setElmIndex(elmIndex - 1);
+        swipeToPrevStep().then(() => {
+            setIsLoading(false);
+        });
     };
 
     return (
@@ -53,20 +101,31 @@ export default function NewNegotiation({ isOpen, setIsOpen }: NNProps) {
             </div>
 
             {/* Body */}
-            <div className="w-full h-full flex overflow-x-auto" ref={swipeContainer}>
-                {step}
+            <div
+                className="swipe-container w-full h-full flex overflow-x-hidden scroll-snap-x"
+                ref={swipeContainer}
+            >
+                {formElements.map((elm, idx) => (
+                    <div key={idx} className="min-w-full snap-start">
+                        {elm.ui}
+                    </div>
+                ))}
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex">
                 <Button
                     onClick={renderPrevStep}
                     variant="outline"
+                    className={`
+                        overflow-hidden transition-all duration-200
+                        ${elmIndex === 1 ? "w-0 px-0" : "w-auto mr-3"}
+                    `}
                     disabled={isLoading}
                 >Prev</Button>
 
                 <Button
                     onClick={renderNextStep}
-                    className="w-full"
+                    className="w-full transition-all duration-200"
                     disabled={isLoading}
                 >Next</Button>
             </div>
