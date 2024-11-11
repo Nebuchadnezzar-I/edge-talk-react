@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { FormQuestions, firstForm } from "./temp";
 
 export type NextStepData = {
@@ -43,13 +42,8 @@ interface MultipleChoiceProps {
 
 export const MultipleChoice = ({ idx, data }: MultipleChoiceProps) => {
     return (
-        <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full mb-3 mt-3">
             <p><strong>{idx}.</strong> {data.qes}</p>
-            <div className="flex flex-col w-full h-full items-center justify-center gap-3">
-                {data.opt?.map((opt, idx) => (
-                    <Button key={idx} variant="outline" className="w-full">{opt.label}</Button>
-                ))}
-            </div>
         </div>
     );
 }

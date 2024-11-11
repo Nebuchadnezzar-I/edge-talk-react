@@ -1,15 +1,20 @@
-export type FormQuestions = {
-    qes: string;
-    elt?:
+type elt =
     | "textarea"
     | "yes-no"
     | "multiple-choice"
     | "scale"
     | "repeating-section"
-    | "unknown"
     | "matrix"
-    | "section";
+    | "section"
+    | "unknown";
+
+export type FormQuestions = {
+    qes: string;
     note?: string;
+    elt?: elt;
+    // Only for prod
+    opt?: { label: string, port: elt }[];
+    // Only for dev purposes
     refopts?: string[];
 };
 
@@ -20,12 +25,12 @@ export const firstForm: FormQuestions[] = [
     },
     {
         qes: "What is prompting this negotiation?",
-        elt: "unknown",
-        refopts: [
-            "New Opportunity",
-            "Ongoing Partnership",
-            "Competitive Bid / Vendor Selection",
-            "Other",
+        elt: "multiple-choice",
+        opt: [
+            { label: "New Opportunity", port: "textarea" },
+            { label: "Ongoing Partnership", port: "textarea" },
+            { label: "Competitive Bid / Vendor Selection", port: "textarea" },
+            { label: "Other", port: "textarea" },
         ],
     },
     {

@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { GetNextStep, NextStepData } from "./helpers/step";
-
 import { X } from "lucide-react";
+import { GetNextStep, type NextStepData } from "./helpers/step";
 import { firstForm } from "./helpers/temp";
+import { SwipeNext, SwipePrev } from "@/utils/ui";
 
 interface NNProps {
     isOpen: boolean;
@@ -12,77 +12,56 @@ interface NNProps {
 }
 
 export default function NewNegotiation({ isOpen, setIsOpen }: NNProps) {
+    const swipeContainer = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [formElements, setFormElements] = useState<NextStepData[]>([]);
-    const [elmIndex, setElmIndex] = useState(0);
-    const swipeContainer = useRef<HTMLDivElement>(null);
-    console.log(elmIndex);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isNavHidden, setIsNavHidden] = useState(false);
+    const viewIdx = useRef(0);
 
-    const swipeToNextStep = () => {
-        return new Promise((resolve) => {
-            if (!swipeContainer.current) return;
-            swipeContainer.current.scrollTo({
-                left: swipeContainer.current.scrollLeft + swipeContainer.current.clientWidth,
-                behavior: 'smooth',
+    useEffect(() => {
+        getNextElement(viewIdx.current)
+            .then((res) => {
+                viewIdx.current += 1;
+                setFormElements([res]);
+                setCurrentIndex(0);
+            })
+            .then(async () => await SwipeNext(swipeContainer))
+            .finally(() => {
+                setIsLoading(false);
             });
+    }, []);
 
-            setTimeout(() => {
-                resolve(1);
-            }, 250);
-        });
+    const renderPrevStep = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex(currentIndex - 1);
+            SwipePrev(swipeContainer);
+        }
     }
 
-    const swipeToPrevStep = () => {
-        return new Promise((resolve) => {
-            if (!swipeContainer.current) return;
-            swipeContainer.current.scrollTo({
-                left: swipeContainer.current.scrollLeft - swipeContainer.current.clientWidth,
-                behavior: 'smooth',
-            });
-
-            setTimeout(() => {
-                resolve(1);
-            }, 250);
-        });
-    }
-
-    const renderNextElement = async () => {
-        return new Promise((resolve) => {
-            const newElm = GetNextStep(elmIndex);
-            setFormElements((prev) => [...prev, newElm]);
-            swipeToNextStep();
-            resolve(newElm);
-        });
-    }
-
-    const renderNextStep = async () => {
-        setIsLoading(true);
-        if (firstForm.length >= elmIndex) {
-            renderNextElement().then(() => {
-                setElmIndex(elmIndex + 1);
-                swipeToNextStep().then(() => {
+    const renderNextStep = () => {
+        if (currentIndex < formElements.length - 1) {
+            setCurrentIndex(currentIndex + 1);
+            SwipeNext(swipeContainer);
+        } else if (viewIdx.current < firstForm.length) {
+            setIsLoading(true);
+            getNextElement(viewIdx.current)
+                .then((res) => {
+                    viewIdx.current += 1;
+                    setFormElements((prevElements) => [...prevElements, res]);
+                    setCurrentIndex(currentIndex + 1);
+                    if (res.hasOwnCtroller) {
+                        setIsNavHidden(true);
+                    } else {
+                        setIsNavHidden(false);
+                    }
+                })
+                .then(() => SwipeNext(swipeContainer))
+                .finally(() => {
                     setIsLoading(false);
                 });
-            });
         }
-    };
-
-    if (formElements.length === 0) {
-        setElmIndex(elmIndex + 1);
-        renderNextElement();
     }
-
-    const renderPrevStep = async () => {
-        setIsLoading(true);
-        if (elmIndex === 1) {
-            setIsLoading(false);
-            return;
-        }
-        setElmIndex(elmIndex - 1);
-        swipeToPrevStep().then(() => {
-            setIsLoading(false);
-        });
-    };
 
     return (
         <div
@@ -112,23 +91,29 @@ export default function NewNegotiation({ isOpen, setIsOpen }: NNProps) {
                 ))}
             </div>
 
-            <div className="flex">
+            <div className={`flex ${isNavHidden && "hidden"}`}>
                 <Button
                     onClick={renderPrevStep}
+                    disabled={isLoading}
                     variant="outline"
                     className={`
                         overflow-hidden transition-all duration-200
-                        ${elmIndex === 1 ? "w-0 px-0" : "w-auto mr-3"}
+                        ${currentIndex <= 1 ? "w-0 px-0" : "w-auto mr-3"}
                     `}
-                    disabled={isLoading}
                 >Prev</Button>
 
                 <Button
                     onClick={renderNextStep}
-                    className="w-full transition-all duration-200"
                     disabled={isLoading}
+                    className="w-full transition-all duration-200"
                 >Next</Button>
             </div>
         </div>
     );
+}
+
+const getNextElement = (idx: number): Promise<NextStepData> => {
+    return new Promise((resolve) => {
+        resolve(GetNextStep(idx));
+    });
 }
