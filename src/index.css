@@ -63,20 +63,17 @@
         @apply border-border;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground p-0;
         width: 100vw;
         height: 100dvh;
     }
-    #root {
-        @apply w-full h-full;
-    }
-    .layout {
-        width: 100%;
-        height: 100%;
+    #root { @apply w-full h-full; }
 
-        .body-content {
-            max-height: calc(100% - 4rem);
-        }
+    .body-content {
+        max-height: calc(100dvh - 2.5rem - 2* .75rem);
+    }
+
+    .modal-content {
+        max-height: calc(100dvh - 2.5rem - 2* .75rem - .75rem);
     }
 }
-
