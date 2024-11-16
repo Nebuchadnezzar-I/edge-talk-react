@@ -254,7 +254,7 @@ export function Q13() {
         <div className="min-w-full snap-start flex flex-col">
             <p className="text-md"><strong>13.</strong> Where does your product/service fit in the Commodity Matrix?</p>
             <div className="p-1">
-                TODO: Matrix
+                Matrix
             </div>
         </div>
     );
@@ -295,24 +295,16 @@ export function Q16() {
 
 export function Q17() {
     return (
-        <>
-            <div className="min-w-full snap-start flex flex-col">
-                <p className="text-md"><strong>17.</strong> What are the primary risks you anticipate in this negotiation?</p>
-                <div className="w-full h-full flex flex-col gap-3 justify-center">
-                    <Button variant="outline">Price Pressure</Button>
-                    <Button variant="outline">Contractual or Delivery Risks</Button>
-                    <Button variant="outline">Competitive Positioning Risks</Button>
-                    <Button variant="outline">Relationship Deterioration</Button>
-                    <Button variant="outline">Other</Button>
-                </div>
+        <div className="min-w-full snap-start flex flex-col">
+            <p className="text-md"><strong>17.</strong> What are the primary risks you anticipate in this negotiation?</p>
+            <div className="w-full h-full flex flex-col gap-3 justify-center">
+                <Button variant="outline">Price Pressure</Button>
+                <Button variant="outline">Contractual or Delivery Risks</Button>
+                <Button variant="outline">Competitive Positioning Risks</Button>
+                <Button variant="outline">Relationship Deterioration</Button>
+                <Button variant="outline">Other</Button>
             </div>
-            <div className="min-w-full snap-start hidden">
-                <p className="text-md"><strong>17.</strong> Explain your assessment and how you plan to manage this risk.</p>
-                <div className="p-1">
-                    <Textarea />
-                </div>
-            </div>
-        </>
+        </div>
     );
 }
 
@@ -340,7 +332,6 @@ export function Q19() {
 
 export function Q20() {
     return (
-        <>
         <div className="min-w-full snap-start flex flex-col">
             <p className="text-md"><strong>20.</strong> How will you measure the success of this negotiation?</p>
             <div className="w-full h-full flex flex-col gap-3 justify-center">
@@ -348,21 +339,6 @@ export function Q20() {
                 <Button variant="outline">Qualitative Measures</Button>
             </div>
         </div>
-        {/* Quantitative Measures */}
-        <div className="min-w-full snap-start hidden">
-            <p className="text-md"><strong>20.</strong> Detail specific metrics (e.g., financial gain, cost savings, contract duration).</p>
-            <div className="p-1">
-                <Textarea />
-            </div>
-        </div>
-        {/* Quntitative Measures */}
-        <div className="min-w-full snap-start hidden">
-            <p className="text-md"><strong>20.</strong> Describe metrics such as partnership strength, market positioning, satisfaction levels.</p>
-            <div className="p-1">
-                <Textarea />
-            </div>
-        </div>
-        </>
     );
 }
 
@@ -387,7 +363,6 @@ export function Q21() {
 
 export function Q22() {
     return (
-        <>
         <div className="min-w-full snap-start flex flex-col">
             <p className="text-md"><strong>22.</strong> Can you identify other stakeholders who might influence or be affected by the negotiation outcome?</p>
             <div className="w-full h-full flex flex-col gap-3 justify-center">
@@ -395,13 +370,6 @@ export function Q22() {
                 <Button variant="outline">No</Button>
             </div>
         </div>
-        <div className="min-w-full snap-start hidden">
-            <p className="text-md"><strong>22.</strong> Are you certain that no other parties will be impacted? Please elaborate on how you've determined this</p>
-            <div className="p-1">
-                <Textarea />
-            </div>
-        </div>
-        </>
     );
 }
 
@@ -418,7 +386,6 @@ export function Q23() {
 
 export function Q24() {
     return (
-        <>
         <div className="min-w-full snap-start flex flex-col">
             <p className="text-md"><strong>24.</strong> Is there a formal or informal hierarchy affecting this negotiation?</p>
             <div className="w-full h-full flex flex-col gap-3 justify-center">
@@ -426,21 +393,6 @@ export function Q24() {
                 <Button variant="outline">No</Button>
             </div>
         </div>
-        {/* Yes */}
-        <div className="min-w-full snap-start hidden">
-            <p className="text-md"><strong>24.</strong> Outline the decision chains and authority levels that may impact the negotiation.</p>
-            <div className="p-1">
-                <Textarea />
-            </div>
-        </div>
-        {/* No */}
-        <div className="min-w-full snap-start hidden">
-            <p className="text-md"><strong>24.</strong> Even without a formal hierarchy, are there informal power dynamics or influences that could affect the negotiation? Please explain.</p>
-            <div className="p-1">
-                <Textarea />
-            </div>
-        </div>
-        </>
     );
 }
 
