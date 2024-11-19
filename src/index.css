@@ -78,11 +78,13 @@
     * {
         @apply border-border;
     }
+
     body {
         @apply bg-background text-foreground p-0;
         width: 100vw;
         height: 100dvh;
     }
+
     #root { @apply w-full h-full; }
 
     .body-content {
