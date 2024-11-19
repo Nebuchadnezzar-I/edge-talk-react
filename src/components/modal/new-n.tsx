@@ -30,7 +30,7 @@ export default function NewNegotiationModal(
     return (
         <div className={`
             fixed bottom-0 left-0 w-full bg-background flex flex-col
-            gap-3 ${ isOpen ? "h-full p-3" : "h-0" } transition-all
+            gap-3 ${ isOpen ? "h-full p-3 pb-6" : "h-0" } transition-all
             `}
         >
             <div className="w-full flex items-center justify-between">
