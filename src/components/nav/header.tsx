@@ -1,4 +1,4 @@
-import HeaderDropdown from "../dropdown/header-dropdown";
+import HeaderDropdown from '../dropdown/header-dropdown';
 
 export default function Header() {
     return (

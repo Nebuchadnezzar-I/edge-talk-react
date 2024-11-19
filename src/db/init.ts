@@ -1,5 +1,5 @@
-import { supabase } from "./create-client";
-import { z } from "zod";
+import { supabase } from './create-client';
+import { z } from 'zod';
 
 const NegotiationDataSchema = z.array(
     z.object({
@@ -13,15 +13,13 @@ export type NegotiationData = z.infer<typeof NegotiationDataSchema>;
 
 export async function GetInitData() {
     // TODO: Handle error: let { data, error } = await supabase
-    let { data } = await supabase
-        .from('Negotiations')
-        .select('*')
+    let { data } = await supabase.from('Negotiations').select('*');
 
     const parsedData = NegotiationDataSchema.safeParse(data);
     console.log(parsedData);
 
     if (!parsedData.success) {
-        throw new Error(parsedData.error.errors.join(", "));
+        throw new Error(parsedData.error.errors.join(', '));
     }
 
     if (parsedData.data.length === 0) {

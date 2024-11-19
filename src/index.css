@@ -85,22 +85,24 @@
         height: 100dvh;
     }
 
-    #root { @apply w-full h-full; }
+    #root {
+        @apply w-full h-full;
+    }
 
     .body-content {
-        max-height: calc(100dvh - 2.5rem - 2* .75rem);
+        max-height: calc(100dvh - 2.5rem - 2 * 0.75rem);
     }
 
     .modal-content {
-        max-height: calc(100dvh - 2.5rem - 2* .75rem - .75rem);
+        max-height: calc(100dvh - 2.5rem - 2 * 0.75rem - 0.75rem);
     }
 }
 
 @layer base {
-  * {
-    @apply border-border;
+    * {
+        @apply border-border;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
 }

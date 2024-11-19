@@ -1,7 +1,7 @@
-import path from "path"
-import react from '@vitejs/plugin-react-swc'
-import { VitePWA } from 'vite-plugin-pwa'
-import { defineConfig } from "vite"
+import path from 'path';
+import react from '@vitejs/plugin-react-swc';
+import { VitePWA } from 'vite-plugin-pwa';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
     plugins: [
@@ -16,20 +16,20 @@ export default defineConfig({
                     {
                         src: '',
                         sizes: '192x192',
-                        type: 'image/png'
+                        type: 'image/png',
                     },
                     {
                         src: '',
                         sizes: '512x512',
-                        type: 'image/png'
-                    }
-                ]
-            }
+                        type: 'image/png',
+                    },
+                ],
+            },
         }),
     ],
     resolve: {
         alias: {
-            "@": path.resolve(__dirname, "./src"),
+            '@': path.resolve(__dirname, './src'),
         },
     },
-})
+});

@@ -1,8 +1,8 @@
-import Header from "./components/nav/header";
-import { useEffect, useRef, useState } from "react";
-import { Button } from "./components/ui/button";
-import { GetInitData, NegotiationData } from "./db/init";
-import NewNegotiationModal from "./components/modal/new-n";
+import Header from './components/nav/header';
+import { useEffect, useRef, useState } from 'react';
+import { Button } from './components/ui/button';
+import { GetInitData, NegotiationData } from './db/init';
+import NewNegotiationModal from './components/modal/new-n';
 
 type NegotiationDataState = {
     firstNegotiation: boolean;
@@ -10,13 +10,12 @@ type NegotiationDataState = {
 } | null;
 
 export default function App() {
-    const [negotiationData, setNegotiationData] = useState<NegotiationDataState>(null);
+    const [negotiationData, setNegotiationData] =
+        useState<NegotiationDataState>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        GetInitData()
-            .then(setNegotiationData)
-            .catch(console.error);
+        GetInitData().then(setNegotiationData).catch(console.error);
     }, []);
 
     return (
@@ -28,7 +27,9 @@ export default function App() {
                     <Button
                         onClick={() => setIsModalOpen(true)}
                         className="rounded-full px-5"
-                    >Create new negotiation</Button>
+                    >
+                        Create new negotiation
+                    </Button>
                 </div>
             )}
 
@@ -36,9 +37,12 @@ export default function App() {
                 <SwipeContainer nData={negotiationData} />
             )}
 
-            <NewNegotiationModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+            <NewNegotiationModal
+                isOpen={isModalOpen}
+                setIsOpen={setIsModalOpen}
+            />
         </div>
-    )
+    );
 }
 
 interface SwipeContainerProps {
@@ -52,17 +56,17 @@ function SwipeContainer({ nData }: SwipeContainerProps) {
         if (!refContainer.current) return;
         refContainer.current.scrollBy({
             left: window.innerWidth,
-            behavior: "smooth",
+            behavior: 'smooth',
         });
-    }
+    };
 
     const swipeContainerPrev = () => {
         if (!refContainer.current) return;
         refContainer.current.scrollBy({
             left: -window.innerWidth,
-            behavior: "smooth",
+            behavior: 'smooth',
         });
-    }
+    };
 
     return (
         <div
@@ -85,10 +89,9 @@ function SwipeContainer({ nData }: SwipeContainerProps) {
             <div className="h-full min-w-full snap-start">
                 {/* Header */}
                 <div className="w-full flex items-center justify-between">
-                    <Button
-                        variant="ghost"
-                        onClick={swipeContainerPrev}
-                    >Back</Button>
+                    <Button variant="ghost" onClick={swipeContainerPrev}>
+                        Back
+                    </Button>
                     <h3 className="text-lg font-semibold">Details</h3>
                 </div>
             </div>
