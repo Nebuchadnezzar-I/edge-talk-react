@@ -49,10 +49,7 @@ export default function NewNegotiationModal({
         elmFourteen: '',
     });
 
-    const submitForm = () => {
-        console.log('Data:', formEntries);
-
-        // Reset form entries
+    const closeModal = () => {
         setFormEntries({
             elmZero: '',
             elmOne: '',
@@ -71,6 +68,16 @@ export default function NewNegotiationModal({
             elmFourteen: '',
         });
         setIsOpen(false);
+        setViewIndex(0);
+        resetScrollPosition();
+    };
+
+    const submitForm = () => {
+        console.log('Data:', formEntries);
+        // TODO: Handle form data creation
+
+        // Reset form entries
+        closeModal();
     };
 
     const setFormEntryValue = (name: string, value: string) => {
@@ -97,16 +104,24 @@ export default function NewNegotiationModal({
         });
     };
 
+    const resetScrollPosition = () => {
+        if (refContainer.current) {
+            refContainer.current.scrollTo({
+                left: 0,
+            });
+        }
+    };
+
     return (
         <div
             className={`
                 fixed bottom-0 left-0 w-full bg-background flex flex-col
-                gap-3 ${isOpen ? 'h-full p-3 pb-6' : 'h-0'} transition-all
+                gap-3 px-3 ${isOpen ? 'h-full py-3 pb-6' : 'h-0'} transition-all
             `}
         >
             <div className="w-full flex items-center justify-between">
                 <h3 className="text-lg font-semibold">New negotiation</h3>
-                <Button onClick={() => setIsOpen(false)} variant="ghost">
+                <Button onClick={closeModal} variant="ghost">
                     Close
                 </Button>
             </div>
