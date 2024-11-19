@@ -50,7 +50,7 @@ export default function NewNegotiationModal({
     });
 
     const submitForm = () => {
-        console.log("Data:", formEntries);
+        console.log('Data:', formEntries);
 
         // Reset form entries
         setFormEntries({
@@ -71,7 +71,7 @@ export default function NewNegotiationModal({
             elmFourteen: '',
         });
         setIsOpen(false);
-    }
+    };
 
     const setFormEntryValue = (name: string, value: string) => {
         setFormEntries((prev) => ({ ...prev, [name]: value }));
@@ -132,7 +132,9 @@ export default function NewNegotiationModal({
                 <FormElementFourteen setVal={setFormEntryValue} />
             </div>
 
-            <div className={`flex gap-3 ${viewIndex === FORM_LENGTH && "hidden"}`}>
+            <div
+                className={`flex gap-3 ${viewIndex === FORM_LENGTH && 'hidden'}`}
+            >
                 <Button variant="outline" onClick={swipeContainerPrev}>
                     Prev
                 </Button>
@@ -141,7 +143,9 @@ export default function NewNegotiationModal({
                 </Button>
             </div>
 
-            <div className={`flex gap-3 ${viewIndex !== FORM_LENGTH && "hidden"}`}>
+            <div
+                className={`flex gap-3 ${viewIndex !== FORM_LENGTH && 'hidden'}`}
+            >
                 <Button className="w-full" onClick={submitForm}>
                     Submit
                 </Button>
