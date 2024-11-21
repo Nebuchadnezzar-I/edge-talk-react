@@ -1,7 +1,19 @@
+import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 
 interface FormElementProps {
     setVal: (name: string, value: string) => void;
+}
+
+export function NameOfNegotiation({ setVal }: FormElementProps) {
+    return (
+        <div className="min-w-full snap-start flex flex-col gap-3">
+            <p>What is the name of this negotiation?</p>
+            <div className="p-1">
+                <Input onChange={(e) => setVal('nName', e.target.value)} />
+            </div>
+        </div>
+    );
 }
 
 export function FormElementZero({ setVal }: FormElementProps) {

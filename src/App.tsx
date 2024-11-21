@@ -3,11 +3,31 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from './components/ui/button';
 import { GetInitData, NegotiationData } from './db/init';
 import NewNegotiationModal from './components/modal/new-n';
+import { supabase } from './db/create-client';
 
 type NegotiationDataState = {
     firstNegotiation: boolean;
     data?: NegotiationData;
 } | null;
+
+export type FormEntries = {
+    nName: string;
+    elmZero: string;
+    elmOne: string;
+    elmTwo: string;
+    elmThree: string;
+    elmFour: string;
+    elmFive: string;
+    elmSix: string;
+    elmSeven: string;
+    elmEight: string;
+    elmNine: string;
+    elmTen: string;
+    elmEleven: string;
+    elmTwelve: string;
+    elmThirteen: string;
+    elmFourteen: string;
+};
 
 export default function App() {
     const [negotiationData, setNegotiationData] =
@@ -17,6 +37,28 @@ export default function App() {
     useEffect(() => {
         GetInitData().then(setNegotiationData).catch(console.error);
     }, []);
+
+    const handleNewNegotiation = async (modalFormData: FormEntries) => {
+        supabase
+            .from('Negotiations')
+            .insert([
+                { name: modalFormData.nName, questionnaire: modalFormData },
+            ])
+            .then(({ error }) => {
+                if (error) {
+                    console.error('Error inserting data:', error);
+                    return;
+                }
+
+                GetInitData()
+                    .then(setNegotiationData)
+                    .catch((err) =>
+                        console.error('Error fetching updated data:', err)
+                    );
+            });
+
+        setIsModalOpen(false);
+    };
 
     return (
         <div className="p-3 w-full h-full flex flex-col gap-3">
@@ -40,6 +82,7 @@ export default function App() {
             <NewNegotiationModal
                 isOpen={isModalOpen}
                 setIsOpen={setIsModalOpen}
+                handleNewNegotiation={handleNewNegotiation}
             />
         </div>
     );

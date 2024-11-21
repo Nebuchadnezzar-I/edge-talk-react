@@ -16,11 +16,14 @@ import {
     FormElementTwelve,
     FormElementTwo,
     FormElementZero,
+    NameOfNegotiation,
 } from './forms-elements';
+import { FormEntries } from '@/App';
 
 interface NewNegotiationModalProps {
     isOpen: boolean;
     setIsOpen: (value: boolean) => void;
+    handleNewNegotiation: (modalFormData: FormEntries) => Promise<void>;
 }
 
 const FORM_LENGTH = 15;
@@ -28,10 +31,13 @@ const FORM_LENGTH = 15;
 export default function NewNegotiationModal({
     isOpen,
     setIsOpen,
+    handleNewNegotiation,
 }: NewNegotiationModalProps) {
     const refContainer = useRef<HTMLDivElement>(null);
     const [viewIndex, setViewIndex] = useState(0);
+
     const [formEntries, setFormEntries] = useState({
+        nName: '',
         elmZero: '',
         elmOne: '',
         elmTwo: '',
@@ -51,6 +57,7 @@ export default function NewNegotiationModal({
 
     const closeModal = () => {
         setFormEntries({
+            nName: '',
             elmZero: '',
             elmOne: '',
             elmTwo: '',
@@ -69,14 +76,10 @@ export default function NewNegotiationModal({
         });
         setIsOpen(false);
         setViewIndex(0);
-        resetScrollPosition();
     };
 
-    const submitForm = () => {
-        console.log('Data:', formEntries);
-        // TODO: Handle form data creation
-
-        // Reset form entries
+    const submitForm = async () => {
+        handleNewNegotiation(formEntries);
         closeModal();
     };
 
@@ -84,31 +87,50 @@ export default function NewNegotiationModal({
         setFormEntries((prev) => ({ ...prev, [name]: value }));
     };
 
-    const swipeContainerNext = () => {
-        if (!refContainer.current) return;
-        if (viewIndex === FORM_LENGTH) return;
-        setViewIndex((prev) => prev + 1);
-        refContainer.current.scrollBy({
-            left: window.innerWidth,
-            behavior: 'smooth',
-        });
+    const incrementViewIndex = () => {
+        if (viewIndex < FORM_LENGTH) setViewIndex((prev) => prev + 1);
     };
 
-    const swipeContainerPrev = () => {
-        if (!refContainer.current) return;
-        if (viewIndex === 0) return;
-        setViewIndex((prev) => prev - 1);
-        refContainer.current.scrollBy({
-            left: -window.innerWidth,
-            behavior: 'smooth',
-        });
+    const decrementViewIndex = () => {
+        if (viewIndex > 0) setViewIndex((prev) => prev - 1);
     };
 
-    const resetScrollPosition = () => {
-        if (refContainer.current) {
-            refContainer.current.scrollTo({
-                left: 0,
-            });
+    const RenderQuestion = (idx: number) => {
+        switch (idx) {
+            case 0:
+                return <NameOfNegotiation setVal={setFormEntryValue} />;
+            case 1:
+                return <FormElementZero setVal={setFormEntryValue} />;
+            case 2:
+                return <FormElementOne setVal={setFormEntryValue} />;
+            case 3:
+                return <FormElementTwo setVal={setFormEntryValue} />;
+            case 4:
+                return <FormElementThree setVal={setFormEntryValue} />;
+            case 5:
+                return <FormElementFour setVal={setFormEntryValue} />;
+            case 6:
+                return <FormElementFive setVal={setFormEntryValue} />;
+            case 7:
+                return <FormElementSix setVal={setFormEntryValue} />;
+            case 8:
+                return <FormElementSeven setVal={setFormEntryValue} />;
+            case 9:
+                return <FormElementEight setVal={setFormEntryValue} />;
+            case 10:
+                return <FormElementNine setVal={setFormEntryValue} />;
+            case 11:
+                return <FormElementTen setVal={setFormEntryValue} />;
+            case 12:
+                return <FormElementEleven setVal={setFormEntryValue} />;
+            case 13:
+                return <FormElementTwelve setVal={setFormEntryValue} />;
+            case 14:
+                return <FormElementThirteen setVal={setFormEntryValue} />;
+            case 15:
+                return <FormElementFourteen setVal={setFormEntryValue} />;
+            default:
+                return <div>Invalid step</div>;
         }
     };
 
@@ -130,30 +152,16 @@ export default function NewNegotiationModal({
                 className="w-full flex overflow-x-hidden snap-x h-full gap-3"
                 ref={refContainer}
             >
-                <FormElementZero setVal={setFormEntryValue} />
-                <FormElementOne setVal={setFormEntryValue} />
-                <FormElementTwo setVal={setFormEntryValue} />
-                <FormElementThree setVal={setFormEntryValue} />
-                <FormElementFour setVal={setFormEntryValue} />
-                <FormElementFive setVal={setFormEntryValue} />
-                <FormElementSix setVal={setFormEntryValue} />
-                <FormElementSeven setVal={setFormEntryValue} />
-                <FormElementEight setVal={setFormEntryValue} />
-                <FormElementNine setVal={setFormEntryValue} />
-                <FormElementTen setVal={setFormEntryValue} />
-                <FormElementEleven setVal={setFormEntryValue} />
-                <FormElementTwelve setVal={setFormEntryValue} />
-                <FormElementThirteen setVal={setFormEntryValue} />
-                <FormElementFourteen setVal={setFormEntryValue} />
+                {RenderQuestion(viewIndex)}
             </div>
 
             <div
                 className={`flex gap-3 ${viewIndex === FORM_LENGTH && 'hidden'}`}
             >
-                <Button variant="outline" onClick={swipeContainerPrev}>
+                <Button variant="outline" onClick={decrementViewIndex}>
                     Prev
                 </Button>
-                <Button className="w-full" onClick={swipeContainerNext}>
+                <Button className="w-full" onClick={incrementViewIndex}>
                     Next
                 </Button>
             </div>
