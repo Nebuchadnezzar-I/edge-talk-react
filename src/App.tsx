@@ -61,7 +61,7 @@ export default function App() {
     const cls = (...classes: string[]) => classes.filter(Boolean).join(' ');
 
     return (
-        <div className="p-3 w-full h-full flex flex-col gap-3">
+        <div className="p-3 pb-6 w-full h-full flex flex-col gap-3">
             {/* hasExistingRecords should be rewriteen its not obvious */}
             <Header
                 showAddButton={!appState.hasExistingRecords}
