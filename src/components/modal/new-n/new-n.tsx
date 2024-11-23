@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import {
     FormElementEight,
     FormElementEleven,
@@ -18,12 +18,12 @@ import {
     FormElementZero,
     NameOfNegotiation,
 } from './forms-elements';
-import { FormEntries } from '@/App';
+import { supabase } from '@/db/create-client';
 
 interface NewNegotiationModalProps {
     isOpen: boolean;
     setIsOpen: (value: boolean) => void;
-    handleNewNegotiation: (modalFormData: FormEntries) => Promise<void>;
+    refreshCall: () => void;
 }
 
 const FORM_LENGTH = 15;
@@ -31,7 +31,7 @@ const FORM_LENGTH = 15;
 export default function NewNegotiationModal({
     isOpen,
     setIsOpen,
-    handleNewNegotiation,
+    refreshCall,
 }: NewNegotiationModalProps) {
     const refContainer = useRef<HTMLDivElement>(null);
     const [viewIndex, setViewIndex] = useState(0);
@@ -79,7 +79,12 @@ export default function NewNegotiationModal({
     };
 
     const submitForm = async () => {
-        handleNewNegotiation(formEntries);
+        supabase
+            .from('Negotiations')
+            .insert([{ name: formEntries.nName, questionnaire: formEntries }])
+            .then(console.error);
+
+        refreshCall();
         closeModal();
     };
 

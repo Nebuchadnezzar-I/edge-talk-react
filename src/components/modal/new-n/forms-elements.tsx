@@ -1,5 +1,5 @@
-import { Input } from '../ui/input';
-import { Textarea } from '../ui/textarea';
+import { Input } from '../../ui/input';
+import { Textarea } from '../../ui/textarea';
 
 interface FormElementProps {
     setVal: (name: string, value: string) => void;
