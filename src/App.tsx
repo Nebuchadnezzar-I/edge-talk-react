@@ -5,7 +5,7 @@ import { GetInitData, type NegotiationData } from './db/init';
 import { swipeContainerNext, swipeContainerPrev } from './helpers/swipe';
 import NewNegotiationModal from './components/modal/new-n/new-n';
 import { ChevronLeft } from 'lucide-react';
-import { Input } from './components/ui/input';
+import { Textarea } from './components/ui/textarea';
 
 type PageState = {
     refreshCount: number;
@@ -152,7 +152,7 @@ export default function App() {
                     <div className="w-full h-full flex flex-col">
                         <div className="w-full h-full"></div>
                         <div className="p-1">
-                            <Input />
+                            <Textarea placeholder="Ask AI ..." />
                         </div>
                     </div>
                 </div>
