@@ -95,7 +95,7 @@ export default function App() {
             <div
                 ref={refContainer}
                 className={cls(
-                    'flex overflow-x-auto snap-x snap-mandatory h-full gap-3',
+                    'flex overflow-x-hidden snap-x snap-mandatory h-full gap-3',
                     appState.negotiations.length > 0 ? 'visible' : 'hidden'
                 )}
             >
