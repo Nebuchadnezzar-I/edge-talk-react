@@ -4,6 +4,8 @@ import { Button } from './components/ui/button';
 import { GetInitData, type NegotiationData } from './db/init';
 import { swipeContainerNext, swipeContainerPrev } from './helpers/swipe';
 import NewNegotiationModal from './components/modal/new-n/new-n';
+import { ChevronLeft } from 'lucide-react';
+import { Input } from './components/ui/input';
 
 type PageState = {
     refreshCount: number;
@@ -61,7 +63,7 @@ export default function App() {
     const cls = (...classes: string[]) => classes.filter(Boolean).join(' ');
 
     return (
-        <div className="p-3 pb-6 w-full h-full flex flex-col gap-3">
+        <div className="p-3 pb-9 w-full h-full flex flex-col gap-3">
             {/* hasExistingRecords should be rewriteen its not obvious */}
             <Header
                 showAddButton={!appState.hasExistingRecords}
@@ -111,9 +113,24 @@ export default function App() {
                 </div>
 
                 <div className="w-full h-full flex flex-col gap-3 min-w-full snap-start">
-                    <Button variant="outline">Consulting</Button>
-                    <Button variant="outline">Live chat</Button>
-                    <Button variant="outline">Email</Button>
+                    <Button
+                        onClick={() => swipeContainerNext(refContainer)}
+                        variant="outline"
+                    >
+                        Consulting
+                    </Button>
+                    <Button
+                        onClick={() => swipeContainerNext(refContainer)}
+                        variant="outline"
+                    >
+                        Live chat
+                    </Button>
+                    <Button
+                        onClick={() => swipeContainerNext(refContainer)}
+                        variant="outline"
+                    >
+                        Email
+                    </Button>
                     {/* Spacer */}
                     <div className="h-full"></div>
                     <Button
@@ -122,6 +139,22 @@ export default function App() {
                     >
                         Back
                     </Button>
+                </div>
+
+                <div className="w-full h-full flex flex-col gap-3 min-w-full snap-start">
+                    <Button
+                        variant="outline"
+                        onClick={() => swipeContainerPrev(refContainer)}
+                        className="w-min"
+                    >
+                        <ChevronLeft />
+                    </Button>
+                    <div className="w-full h-full flex flex-col">
+                        <div className="w-full h-full"></div>
+                        <div className="p-1">
+                            <Input />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
