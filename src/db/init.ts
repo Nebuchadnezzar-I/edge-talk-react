@@ -12,7 +12,6 @@ const NegotiationDataSchema = z.array(
 export type NegotiationData = z.infer<typeof NegotiationDataSchema>;
 
 export async function GetInitData() {
-    // TODO: Handle error: let { data, error } = await supabase
     let { data } = await supabase.from('Negotiations').select('*');
 
     const parsedData = NegotiationDataSchema.safeParse(data);
@@ -23,8 +22,8 @@ export async function GetInitData() {
     }
 
     if (parsedData.data.length === 0) {
-        return { firstNegotiation: true };
+        return { hasRecords: true };
     }
 
-    return { firstNegotiation: false, data: parsedData.data };
+    return { hasRecords: false, data: parsedData.data };
 }

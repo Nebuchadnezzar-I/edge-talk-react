@@ -1,28 +1,23 @@
-import { ChevronLeft } from "lucide-react";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
-import { swipeContainerPrev } from "@/helpers/swipe";
+import { ChevronLeft } from 'lucide-react';
+import { Button } from '../ui/button';
+import { swipeContainerPrev } from '@/helpers/swipe';
 
 interface ConsultingModuleProps {
     refContainer: React.RefObject<HTMLDivElement>;
 }
 
-export default function ConsultingModule({ refContainer }: ConsultingModuleProps) {
+export default function ConsultingModule({
+    refContainer,
+}: ConsultingModuleProps) {
     return (
         <div className="w-full h-full flex flex-col gap-3 min-w-full snap-start">
             <Button
-                variant="outline"
+                variant="ghost"
                 onClick={() => swipeContainerPrev(refContainer)}
-                className="w-min"
+                className="h-10 w-10 p-0"
             >
                 <ChevronLeft />
             </Button>
-            <div className="w-full h-full flex flex-col">
-                <div className="w-full h-full"></div>
-                <div className="p-1">
-                    <Textarea placeholder="Ask AI ..." />
-                </div>
-            </div>
         </div>
     );
 }
