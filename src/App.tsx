@@ -4,8 +4,9 @@ import { Button } from './components/ui/button';
 import { GetInitData, type NegotiationData } from './db/init';
 import { swipeContainerNext, swipeContainerPrev } from './helpers/swipe';
 import NewNegotiationModal from './components/modal/new-n/new-n';
-import { ChevronLeft } from 'lucide-react';
-import { Textarea } from './components/ui/textarea';
+import ConsultingModule from './components/modules/ConsultingModule';
+import LiveChatModule from './components/modules/EmailModule';
+import EmailModule from './components/modules/LiveChatModule';
 
 type PageState = {
     refreshCount: number;
@@ -13,6 +14,7 @@ type PageState = {
     isLoading: boolean;
     hasExistingRecords: boolean;
     isModalActive: boolean;
+    endModule: "ConsultingModule" | "LiveChatModule" | "EmailModule";
 };
 
 export default function App() {
@@ -23,6 +25,7 @@ export default function App() {
         isLoading: true, // Indicates if data is being loaded
         hasExistingRecords: false, // True if the user has existing negotiations
         isModalActive: false, // New negotiation modal
+        endModule: "ConsultingModule",
     });
 
     const closeModal = () => {
@@ -55,6 +58,7 @@ export default function App() {
                     isLoading: false,
                     hasExistingRecords: firstNegotiation,
                     isModalActive: false,
+                    endModule: "ConsultingModule",
                 })
             )
             .catch(console.error);
@@ -114,19 +118,28 @@ export default function App() {
 
                 <div className="w-full h-full flex flex-col gap-3 min-w-full snap-start">
                     <Button
-                        onClick={() => swipeContainerNext(refContainer)}
+                        onClick={() => {
+                            swipeContainerNext(refContainer)
+                            appState.endModule = "ConsultingModule"
+                        }}
                         variant="outline"
                     >
                         Consulting
                     </Button>
                     <Button
-                        onClick={() => swipeContainerNext(refContainer)}
+                        onClick={() => {
+                            swipeContainerNext(refContainer)
+                            appState.endModule = "LiveChatModule"
+                        }}
                         variant="outline"
                     >
                         Live chat
                     </Button>
                     <Button
-                        onClick={() => swipeContainerNext(refContainer)}
+                        onClick={() => {
+                            swipeContainerNext(refContainer)
+                            appState.endModule = "EmailModule"
+                        }}
                         variant="outline"
                     >
                         Email
@@ -141,21 +154,18 @@ export default function App() {
                     </Button>
                 </div>
 
-                <div className="w-full h-full flex flex-col gap-3 min-w-full snap-start">
-                    <Button
-                        variant="outline"
-                        onClick={() => swipeContainerPrev(refContainer)}
-                        className="w-min"
-                    >
-                        <ChevronLeft />
-                    </Button>
-                    <div className="w-full h-full flex flex-col">
-                        <div className="w-full h-full"></div>
-                        <div className="p-1">
-                            <Textarea placeholder="Ask AI ..." />
-                        </div>
-                    </div>
-                </div>
+                {appState.endModule === "ConsultingModule" && (
+                    <ConsultingModule refContainer={refContainer} />
+                )}
+
+                {appState.endModule === "LiveChatModule" && (
+                    <LiveChatModule refContainer={refContainer} />
+                )}
+
+                {appState.endModule === "EmailModule" && (
+                    <EmailModule refContainer={refContainer} />
+                )}
+
             </div>
         </div>
     );
