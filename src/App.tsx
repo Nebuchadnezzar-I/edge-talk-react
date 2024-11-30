@@ -23,6 +23,7 @@ type PageState = {
     hasRecords: boolean;
     isModalActive: boolean;
     endModule: ModuleView;
+    showBackButtonInHeader: boolean;
 };
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
         hasRecords: false,
         isModalActive: false,
         endModule: ModuleView.Consulting,
+        showBackButtonInHeader: false,
     });
 
     useEffect(() => {
@@ -58,11 +60,28 @@ export default function App() {
         ${appState.negotiations.length > 0 ? 'visible' : 'hidden'}
     `;
 
+    const headerSwipeBackHandler = () => {
+        setAppState((prevState) => ({
+            ...prevState,
+            showBackButtonInHeader: false,
+        }));
+    };
+
+    const showHeaderMoveBackButton = () => {
+        setAppState((prevState) => ({
+            ...prevState,
+            showBackButtonInHeader: true,
+        }));
+    };
+
     return (
         <div className="p-3 pb-9 w-full h-full flex flex-col gap-3">
             <Header
+                showBackButton={appState.showBackButtonInHeader}
+                refContainer={refContainer}
                 showAddButton={!appState.hasRecords}
                 openModal={() => openModal(setAppState)}
+                moveBackCallBack={headerSwipeBackHandler}
             />
             <NewNegotiationModal
                 isOpen={appState.isModalActive}
@@ -111,34 +130,47 @@ export default function App() {
                 {/* Second view */}
                 {/*             */}
                 <div className="w-full h-full flex flex-col gap-3 min-w-full snap-start">
-                    <div className="p-3 border rounded-md flex flex-col gap-1 duration-100 hover:bg-secondary cursor-pointer"
+                    <div
+                        className="p-3 border rounded-md flex flex-col gap-1 duration-100 hover:bg-secondary cursor-pointer"
                         onClick={() => {
                             swipeContainerNext(refContainer);
+                            showHeaderMoveBackButton();
                             setEndModule(setAppState, ModuleView.Consulting);
                         }}
                     >
                         <p className="text-sm">Consulting</p>
-                        <p className="text-sm opacity-60">Consult you negotiation with AI.</p>
+                        <p className="text-sm opacity-60">
+                            Consult you negotiation with AI.
+                        </p>
                     </div>
 
-                    <div className="p-3 border rounded-md flex flex-col gap-1 duration-100 hover:bg-secondary cursor-pointer"
+                    <div
+                        className="p-3 border rounded-md flex flex-col gap-1 duration-100 hover:bg-secondary cursor-pointer"
                         onClick={() => {
                             swipeContainerNext(refContainer);
+                            showHeaderMoveBackButton();
                             setEndModule(setAppState, ModuleView.LiveChat);
                         }}
                     >
                         <p className="text-sm">Live chat</p>
-                        <p className="text-sm opacity-60">Write messages to you opponent in real time.</p>
+                        <p className="text-sm opacity-60">
+                            Write messages to you opponent in real time.
+                        </p>
                     </div>
 
-                    <div className="p-3 border rounded-md flex flex-col gap-1 duration-100 hover:bg-secondary cursor-pointer"
+                    <div
+                        className="p-3 border rounded-md flex flex-col gap-1 duration-100 hover:bg-secondary cursor-pointer"
                         onClick={() => {
                             swipeContainerNext(refContainer);
+                            showHeaderMoveBackButton();
                             setEndModule(setAppState, ModuleView.Email);
                         }}
                     >
                         <p className="text-sm">Email</p>
-                        <p className="text-sm opacity-60">Write messages to you opponent in longer time period.</p>
+                        <p className="text-sm opacity-60">
+                            Write messages to you opponent in longer time
+                            period.
+                        </p>
                     </div>
 
                     <Spacer />
@@ -154,16 +186,14 @@ export default function App() {
                 {/* Last */}
                 {/*      */}
                 {appState.endModule === ModuleView.Consulting && (
-                    <ConsultingModule refContainer={refContainer} />
+                    <ConsultingModule />
                 )}
 
                 {appState.endModule === ModuleView.LiveChat && (
-                    <LiveChatModule refContainer={refContainer} />
+                    <LiveChatModule />
                 )}
 
-                {appState.endModule === ModuleView.Email && (
-                    <EmailModule refContainer={refContainer} />
-                )}
+                {appState.endModule === ModuleView.Email && <EmailModule />}
             </div>
         </div>
     );
