@@ -111,27 +111,36 @@ export default function App() {
                 {/* Second view */}
                 {/*             */}
                 <div className="w-full h-full flex flex-col gap-3 min-w-full snap-start">
-                    <OutlineButton
+                    <div className="p-3 border rounded-md flex flex-col gap-1 duration-100 hover:bg-secondary cursor-pointer"
                         onClick={() => {
                             swipeContainerNext(refContainer);
                             setEndModule(setAppState, ModuleView.Consulting);
                         }}
-                        text="Consulting"
-                    />
-                    <OutlineButton
+                    >
+                        <p className="text-sm">Consulting</p>
+                        <p className="text-sm opacity-60">Consult you negotiation with AI.</p>
+                    </div>
+
+                    <div className="p-3 border rounded-md flex flex-col gap-1 duration-100 hover:bg-secondary cursor-pointer"
                         onClick={() => {
                             swipeContainerNext(refContainer);
                             setEndModule(setAppState, ModuleView.LiveChat);
                         }}
-                        text="Live chat"
-                    />
-                    <OutlineButton
+                    >
+                        <p className="text-sm">Live chat</p>
+                        <p className="text-sm opacity-60">Write messages to you opponent in real time.</p>
+                    </div>
+
+                    <div className="p-3 border rounded-md flex flex-col gap-1 duration-100 hover:bg-secondary cursor-pointer"
                         onClick={() => {
                             swipeContainerNext(refContainer);
                             setEndModule(setAppState, ModuleView.Email);
                         }}
-                        text="Email"
-                    />
+                    >
+                        <p className="text-sm">Email</p>
+                        <p className="text-sm opacity-60">Write messages to you opponent in longer time period.</p>
+                    </div>
+
                     <Spacer />
                     {/* mb-1 to align with EndModule */}
                     <OutlineButton
