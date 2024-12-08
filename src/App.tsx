@@ -9,6 +9,7 @@ import LiveChatModule from './components/modules/EmailModule';
 import EmailModule from './components/modules/LiveChatModule';
 import OutlineButton from './components/main-ui/Button';
 import Spacer from './components/main-ui/Spacer';
+import { Globals } from './helpers/globals';
 
 enum ModuleView {
     Consulting,
@@ -116,7 +117,10 @@ export default function App() {
                 <div className="w-full h-full flex flex-col gap-3 min-w-full snap-start">
                     {appState.negotiations.map((record, idx) => (
                         <Button
-                            onClick={() => swipeContainerNext(refContainer)}
+                            onClick={() => {
+                                Globals.selectedNegotiationID = record.id;
+                                swipeContainerNext(refContainer);
+                            }}
                             className="justify-start"
                             variant="outline"
                             key={idx}

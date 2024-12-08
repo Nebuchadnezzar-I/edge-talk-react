@@ -142,7 +142,7 @@ export default function NewNegotiationModal({
     return (
         <div
             className={`
-                fixed bottom-0 left-0 w-full bg-background flex flex-col
+                fixed bottom-0 left-0 w-full bg-background flex flex-col z-[999]
                 gap-3 px-3 ${isOpen ? 'h-full py-3 pb-6' : 'h-0'} transition-all
             `}
         >
