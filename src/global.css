@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --bg: hsl(225 5.9% 10%);
+    --sec: hsl(210 6.3% 20%);
+    --text: hsl(200 100% 100);
+}
+
+p, a, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto", serif;
+    padding: 1rem;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    width: 100vw;
+    height: 100dvh;
+}
+
+.l1-max-height {
+    max-height: calc(100dvh - 2rem);
+}
+
+.l2-max-height-nav {
+    max-height: calc(100dvh - 6rem);
+}
+
+/*                                 Container                                 */
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+header-component {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    padding: 0 .5rem;
+    width: 100%;
+}
+
+.carousel {
+    height: 100%;
+    display: flex;
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+
+    c1-layout, c2-layout, c3-layout {
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        min-width: calc(100vw - 2rem);
+        min-height: calc(100dvh - 6rem);
+    }
+}
