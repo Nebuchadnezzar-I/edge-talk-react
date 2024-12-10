@@ -9,8 +9,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <header-component></header-component>
     <div class="carousel l2-max-height-nav">
         <c1-layout></c1-layout>
-        <c2-layout></c2-layout>
-        <c3-layout></c3-layout>
+        ${/*<c2-layout></c2-layout>*/ ''}
+        ${/*<c3-layout></c3-layout>*/ ''}
     </div>
 </div>
 `;
