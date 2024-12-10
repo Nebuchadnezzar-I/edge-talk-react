@@ -1,19 +1,34 @@
-class C3Layout extends HTMLElement {
-    constructor() {
-        super();
+import { MoveToPrevWindow } from "../aux/ui/swipe";
 
-        const shadow =
-            this.attachShadow({ mode: 'open' });
+class C3Layout extends HTMLElement {
+    constructor() { super() }
+
+    connectedCallback() { this.render() }
+
+    render() {
+        const shadow = this.attachShadow({ mode: "open" })
 
         shadow.innerHTML = `
-            <p>
-                C3
-            </p>
-        `;
-    }
+        <style>
+        .placeholder {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+        </style>
+        <div class="placeholder" id="placeholder">
+            <h3>Work in progress</h3>
+        </div>
+        `
 
-    connectedCallback() {
-        console.log("C3 Loaded");
+        // Temp
+        const moveBack = shadow.getElementById("placeholder")
+        moveBack?.addEventListener("click", function () {
+            MoveToPrevWindow()
+        });
+        //
     }
 }
 
