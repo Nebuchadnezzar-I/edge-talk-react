@@ -1,74 +1,121 @@
-import { MoveToNextWindow, MoveToPrevWindow } from "../aux/ui/swipe"
+import { MoveToNextWindow, MoveToPrevWindow } from '../aux/ui/swipe';
+import globalStyles from '../global.css?inline';
 
 class C2Layout extends HTMLElement {
-    constructor() { super() }
-
-    async connectedCallback() { this.render() }
+    constructor() {
+        super();
+    }
 
     render() {
-        const shadow = this.attachShadow({ mode: "open" })
+        const shadow = this.attachShadow({ mode: 'open' });
 
-        shadow.innerHTML = `
-        <style>
-        p, h3 { margin: 0; }
-        .option-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        // Style
+        const style = document.createElement('style');
+        style.textContent = globalStyles;
+        shadow.appendChild(style);
+
+        // Page
+        const page = document.createElement('div');
+        page.classList.add('c2');
+
+        const select = document.createElement('div');
+        select.classList.add('options');
+        select.id = 'options';
+
+        // Option One
+        {
+            const optionOne = document.createElement('div');
+            optionOne.classList.add('item');
+            optionOne.setAttribute('data-id', 'consulting');
+
+            const h3 = document.createElement('h3');
+            h3.append('Consulting AI');
+
+            const p = document.createElement('p');
+            p.append('Consult you negotiation with AI.');
+
+            optionOne.appendChild(h3);
+            optionOne.appendChild(p);
+            select.appendChild(optionOne);
         }
-        .option {
-            padding: .5rem 1rem;
-            border-radius: .5rem;
-            transition: 100ms background;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: .25rem;
 
-            &:hover {
-                background: var(--sec);
+        // Options Two
+        {
+            const optionTwo = document.createElement('div');
+            optionTwo.classList.add('item');
+            optionTwo.setAttribute('data-id', 'live-chat');
+
+            const h3 = document.createElement('h3');
+            h3.append('Live chat');
+
+            const p = document.createElement('p');
+            p.append('Write messages to you opponent in real time.');
+
+            optionTwo.appendChild(h3);
+            optionTwo.appendChild(p);
+            select.appendChild(optionTwo);
+        }
+
+        // Options Three
+        {
+            const optionThree = document.createElement('div');
+            optionThree.classList.add('item');
+            optionThree.setAttribute('data-id', 'email');
+
+            const h3 = document.createElement('h3');
+            h3.append('Email');
+
+            const p = document.createElement('p');
+            p.append('Write messages to you opponent (longer period).');
+
+            optionThree.appendChild(h3);
+            optionThree.appendChild(p);
+            select.appendChild(optionThree);
+        }
+
+        //
+
+        const moveBack = document.createElement('div');
+        moveBack.id = 'move-back';
+        moveBack.classList.add('move-back');
+        moveBack.setAttribute('data-id', 'email');
+
+        const h3 = document.createElement('h3');
+        h3.append('Move back');
+
+        moveBack.appendChild(h3);
+
+        page.appendChild(select);
+        page.appendChild(moveBack);
+        shadow.appendChild(page);
+
+        const moveBackButton = shadow.getElementById('move-back');
+        moveBackButton?.addEventListener('click', function () {
+            MoveToPrevWindow();
+        });
+
+        const moduleList = shadow.getElementById('options');
+        moduleList?.addEventListener('click', function (event: MouseEvent) {
+            const target = (event.target as HTMLElement).closest('.item');
+            if (target) {
+                document.dispatchEvent(
+                    new CustomEvent('c3-event', {
+                        detail: {
+                            renderComponent: target.getAttribute('data-id'),
+                        },
+                        bubbles: true,
+                        composed: true,
+                    })
+                );
+
+                MoveToNextWindow();
             }
-        }
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-        }
-        </style>
-        <div class="wrapper">
-            <div class="option-menu" id="module-list">
-                <div class="option" data-id="consulting">
-                    <h3>Consulting AI</h3>
-                    <p>Consult you negotiation with AI.</p>
-                </div>
-                <div class="option" data-id="live-chat">
-                    <h3>Live chat</h3>
-                    <p>Write messages to you opponent in real time.</p>
-                </div>
-                <div class="option" data-id="email">
-                    <h3>Email</h3>
-                    <p>Write messages to you opponent in longer time period.</p>
-                </div>
-            </div>
-            <div class="option" data-id="email" id="move-back">
-                <h3>Move back</h3>
-            </div>
-        </div>
-        `;
-
-        const moveBackButton = shadow.getElementById("move-back")
-        moveBackButton?.addEventListener("click", function (event: MouseEvent) {
-            const target = (event.target as HTMLElement).closest(".option")
-            if (target) { MoveToPrevWindow() }
         });
+    }
 
-        const moduleList = shadow.getElementById("module-list")
-        moduleList?.addEventListener("click", function (event: MouseEvent) {
-            const target = (event.target as HTMLElement).closest(".option")
-            if (target) { MoveToNextWindow() }
-        });
+    connectedCallback() {
+        this.render();
     }
 }
 
-customElements.define("c2-layout", C2Layout);
+customElements.define('c2-layout', C2Layout);

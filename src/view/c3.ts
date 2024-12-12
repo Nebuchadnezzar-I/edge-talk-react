@@ -1,34 +1,105 @@
-import { MoveToPrevWindow } from "../aux/ui/swipe";
+import { MoveToPrevWindow } from '../aux/ui/swipe';
+import globalStyles from '../global.css?inline';
 
 class C3Layout extends HTMLElement {
-    constructor() { super() }
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this.handleEvent = this.handleEvent.bind(this);
+    }
 
-    connectedCallback() { this.render() }
+    connectedCallback() {
+        document.addEventListener('c3-event', this.handleEvent);
+    }
 
-    render() {
-        const shadow = this.attachShadow({ mode: "open" })
+    disconnectedCallback() {
+        document.removeEventListener('c3-event', this.handleEvent);
+    }
 
-        shadow.innerHTML = `
-        <style>
-        .placeholder {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            align-items: center;
-            justify-content: center;
-        }
-        </style>
-        <div class="placeholder" id="placeholder">
-            <h3>Work in progress</h3>
-        </div>
-        `
+    renderEmail() {
+        this.clearShadowRoot();
 
-        // Temp
-        const moveBack = shadow.getElementById("placeholder")
-        moveBack?.addEventListener("click", function () {
-            MoveToPrevWindow()
+        const style = document.createElement('style');
+        style.textContent = globalStyles;
+        this.shadowRoot?.appendChild(style);
+
+        const page = document.createElement('div');
+        page.classList.add('placeholder');
+        page.id = 'placeholder';
+
+        const h3 = document.createElement('h3');
+        h3.textContent = 'Email';
+
+        page.appendChild(h3);
+        this.shadowRoot?.appendChild(page);
+
+        page.addEventListener('click', () => {
+            MoveToPrevWindow();
         });
-        //
+    }
+
+    renderConsulting() {
+        this.clearShadowRoot();
+
+        const style = document.createElement('style');
+        style.textContent = globalStyles;
+        this.shadowRoot?.appendChild(style);
+
+        const page = document.createElement('div');
+        page.classList.add('placeholder');
+        page.id = 'placeholder';
+
+        const h3 = document.createElement('h3');
+        h3.textContent = 'Consulting';
+
+        page.appendChild(h3);
+        this.shadowRoot?.appendChild(page);
+
+        page.addEventListener('click', () => {
+            MoveToPrevWindow();
+        });
+    }
+
+    renderLiveChat() {
+        this.clearShadowRoot();
+
+        const style = document.createElement('style');
+        style.textContent = globalStyles;
+        this.shadowRoot?.appendChild(style);
+
+        const page = document.createElement('div');
+        page.classList.add('placeholder');
+        page.id = 'placeholder';
+
+        const h3 = document.createElement('h3');
+        h3.textContent = 'Live Chat';
+
+        page.appendChild(h3);
+        this.shadowRoot?.appendChild(page);
+
+        page.addEventListener('click', () => {
+            MoveToPrevWindow();
+        });
+    }
+
+    clearShadowRoot() {
+        while (this.shadowRoot?.firstChild) {
+            this.shadowRoot.removeChild(this.shadowRoot.firstChild);
+        }
+    }
+
+    handleEvent(event: any) {
+        switch (event.detail.renderComponent) {
+            case 'email':
+                this.renderEmail();
+                break;
+            case 'consulting':
+                this.renderConsulting();
+                break;
+            case 'live-chat':
+                this.renderLiveChat();
+                break;
+        }
     }
 }
 
