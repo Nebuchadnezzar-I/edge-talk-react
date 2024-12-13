@@ -142,10 +142,42 @@ header-component {
 }
 
 /* c3 */
-.placeholder {
-    display: flex;
+.c3 {
     width: 100%;
     height: 100%;
-    align-items: center;
-    justify-content: center;
+    overflow-y: auto;
+
+    .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0.5rem;
+        padding-top: 0;
+    }
+
+    .email-item {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        border-bottom: 1px solid var(--sec);
+        padding: 1rem 0.5rem;
+        transition: 100ms background;
+
+        &:hover {
+            background: var(--sec);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+
+            h3 {
+                opacity: 0.8;
+            }
+
+            p {
+                opacity: 0.5;
+            }
+        }
+    }
 }

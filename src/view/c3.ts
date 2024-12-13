@@ -24,16 +24,54 @@ class C3Layout extends HTMLElement {
         this.shadowRoot?.appendChild(style);
 
         const page = document.createElement('div');
-        page.classList.add('placeholder');
-        page.id = 'placeholder';
+        page.classList.add('l2-max-height-nav');
+        page.classList.add('c3');
 
-        const h3 = document.createElement('h3');
-        h3.textContent = 'Email';
+        const pageHeader = document.createElement('div');
+        pageHeader.classList.add('head');
 
-        page.appendChild(h3);
+        const backButton = document.createElement('p');
+        backButton.innerText = 'Back';
+        backButton.id = 'back-button';
+
+        const newButton = document.createElement('p');
+        newButton.innerText = 'New';
+
+        pageHeader.appendChild(backButton);
+        pageHeader.appendChild(newButton);
+        page.appendChild(pageHeader);
+
+        // Email item
+        {
+            const emailItem = document.createElement('div');
+            emailItem.classList.add('email-item');
+
+            const header = document.createElement('div');
+            header.classList.add('header');
+
+            const hH3 = document.createElement('h3');
+            hH3.innerText = 'AI';
+            header.appendChild(hH3);
+
+            const hp = document.createElement('p');
+            hp.innerText = '2.11.2024';
+            header.appendChild(hp);
+
+            const msgContent = document.createElement('p');
+            msgContent.innerText = 'MSG Content';
+
+            emailItem.appendChild(header);
+            emailItem.appendChild(msgContent);
+
+            for (let i = 0; i < 5; i++) {
+                const clonedItem = emailItem.cloneNode(true);
+                page.appendChild(clonedItem);
+            }
+        }
+
         this.shadowRoot?.appendChild(page);
 
-        page.addEventListener('click', () => {
+        backButton.addEventListener('click', () => {
             MoveToPrevWindow();
         });
     }
